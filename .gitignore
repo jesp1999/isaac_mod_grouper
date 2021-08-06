@@ -1,2 +1,4 @@
 profiles.json
 properties.ini
+*.swp
+isaac_mod_grouper.spec
