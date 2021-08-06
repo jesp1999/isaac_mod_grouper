@@ -87,8 +87,8 @@ if __name__ == "__main__":
             f.write(path)
 
     with open("properties.ini", "r") as f:
-        isaac_mods_folder = f.readline()
-    if not os.path.isdir(pathlib.Path(isaac_mods_folder)):
+        isaac_mods_folder = pathlib.Path(f.readline())
+    if not os.path.isdir(isaac_mods_folder):
         print("Invalid isaac mods folder location! Try again..")
         os.remove("properties.ini")
         exit() #TODO do this better......
