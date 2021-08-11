@@ -1,7 +1,10 @@
+#!/usr/bin/env python
+
 import os
 import shutil
 import json
 import pathlib
+import sys
 
 '''
 TODO features to add:
@@ -100,7 +103,7 @@ if __name__ == "__main__":
         args = user_input[1:]
         if command == "exit":
             print("Goodbye.")
-            exit()
+            sys.exit(0)
         elif command == "export" and len(args) != 0:
             mod_group_name = args[0]
             export_mod_group(mod_group_name)
