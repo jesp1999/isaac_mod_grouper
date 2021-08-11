@@ -13,7 +13,13 @@ Property where
 
 '''
 version = "1.0.0"
-command_list = ["import", "export", "remove", "list", "exit"]
+command_list = ["help", "import", "export", "remove", "list", "exit"]
+command_info = {"help": "Generates documentation for a given command.\nSyntax: \"help <command>\"",\
+                "import": "Enables only the mods associated with an existing mod profile on the user\'s Isaac instance.\nSyntax: \"import <profile_name>\"", \
+                "export": "Exports the currently enabled mods from the user\'s Isaac instance into a mod profile.\nSyntax: \"export <profile_name>\"", \
+                "remove": "Removes a mod profile from the list of existing mod profiles.\nSyntax: \"remove <profile_name>\"", \
+                "list": "Lists off all existing mod profiles.\nSyntax: \"list\"", \
+                "exit": "Exits the program.\nSyntax: \"exit\""}
 isaac_mods_folder = ""
 
 def main():
@@ -102,7 +108,7 @@ if __name__ == "__main__":
     with open("properties.ini", "r") as f:
         isaac_mods_folder = pathlib.Path(f.readline())
     if not os.path.isdir(isaac_mods_folder):
-        print("Invalid isaac mods folder location! Try again..")
+        print("Invalid isaac mods folder location! Try again..\n")
         os.remove("properties.ini")
         exit() #TODO do this better......
 
@@ -111,18 +117,40 @@ if __name__ == "__main__":
         user_input = input(">").split(" ")
         command = user_input[0]
         args = user_input[1:]
-        if command == "exit":
+        if command == "help":
+            if len(args) == 0:
+                print("Use \"help <command>\" for help with a specific command.\n")
+                print(f"Available commands: {command_list}\n")
+            elif len(args) == 1:
+                command_for_help = args[0]
+                if command_for_help in command_info.keys():
+                    print(command_info[command_for_help])
+                else:
+                    print(f"Unknown command \"{command_for_help}\"")
+                    print(f"Available commands: {command_list}\n")
+            else:
+                print("Incorrect syntax, use \"help <command>\".\n")
+        elif command == "exit":
             print("Goodbye.")
             sys.exit(0)
-        elif command == "export" and len(args) != 0:
-            mod_group_name = args[0]
-            export_mod_group(mod_group_name)
-        elif command == "import" and len(args) != 0:
-            mod_group_name = args[0]
-            import_mod_group(mod_group_name)
-        elif command == "remove" and len(args) != 0:
-            mod_group_name = args[0]
-            remove_mod_group(mod_group_name)
+        elif command == "export":
+            if len(args) == 1:
+                mod_group_name = args[0]
+                export_mod_group(mod_group_name)
+            else:
+                print("Incorrect syntax, use \"export <profile_name>\".\n")
+        elif command == "import":
+            if len(args) == 1:
+                mod_group_name = args[0]
+                import_mod_group(mod_group_name)
+            else:
+                print("Incorrect syntax, use \"import <profile_name>\".\n")
+        elif command == "remove":
+            if len(args) == 1:
+                mod_group_name = args[0]
+                remove_mod_group(mod_group_name)
+            else:
+                print("Incorrect syntax, use \"remove <profile_name>\".\n")
         elif command == "list":
             print(f"Profiles: {list(load_profiles().keys())}\n")
         else:
