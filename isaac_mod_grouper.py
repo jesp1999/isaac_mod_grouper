@@ -13,7 +13,7 @@ Property where
 
 '''
 version = "1.0.0"
-command_list = ["import", "export", "list", "exit"]
+command_list = ["import", "export", "remove", "list", "exit"]
 isaac_mods_folder = ""
 
 def main():
@@ -78,6 +78,16 @@ def import_mod_group(profile):
                 pass
     print(f"Imported enabled mods from {profile} profile successfully.\n")
 
+def remove_mod_group(profile):
+    profiles = load_profiles()
+    if not profile in profiles:
+        print("Unknown profile, try again.\n")
+        return
+    profiles.pop(profile)
+    with open("profiles.json", "w+") as f:
+        json.dump(profiles, f, indent=4)
+        print(f"Removed {profile} profile successfully.\n")
+
 if __name__ == "__main__":
     user_input = []
     print(f"isaac_mod_grouper v{version}")
@@ -110,6 +120,9 @@ if __name__ == "__main__":
         elif command == "import" and len(args) != 0:
             mod_group_name = args[0]
             import_mod_group(mod_group_name)
+        elif command == "remove" and len(args) != 0:
+            mod_group_name = args[0]
+            remove_mod_group(mod_group_name)
         elif command == "list":
             print(f"Profiles: {list(load_profiles().keys())}\n")
         else:
